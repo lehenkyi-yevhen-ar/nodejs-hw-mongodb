@@ -18,7 +18,7 @@ export const setupServer = () => {
     })
   );
 
-  app.get('/students', async (req, res) => {
+  app.get('/contacts', async (req, res) => {
     const students = await Student.find();
 
     res.send({
@@ -28,7 +28,7 @@ export const setupServer = () => {
     });
   });
 
-  app.get('/students/:id', async (req, res) => {
+  app.get('/contacts/:id', async (req, res) => {
     const { id } = req.params;
     const student = await Student.findById(id);
 
