@@ -1,6 +1,6 @@
 import { mongoose } from 'mongoose';
 
-const studentSchema = new mongoose.Schema(
+const contactSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -16,11 +16,18 @@ const studentSchema = new mongoose.Schema(
     isFavourite: {
       type: Boolean,
       default: false
+    },
+    contactType: {
+      type: String,
+      enum: ['home', 'personal'],
+      required: true,
+      default: 'personal'
     }
   },
   {
-    timestamps: true
+    timestamps: true,
+    versionKey: false
   }
 );
 
-export const Student = mongoose.model('Student', studentSchema);
+export const Contact = mongoose.model('Contact', contactSchema);
