@@ -19,7 +19,8 @@ export async function getContactsController(req, res) {
     perPage,
     sortBy,
     sortOrder,
-    filters
+    filters,
+    userId: req.user.id
   });
 
   res.json({
@@ -32,11 +33,15 @@ export async function getContactsController(req, res) {
 export async function getContactByIdController(req, res) {
   const { contactId } = req.params;
 
-  const contact = await getContactById(contactId);
+  const contact = await getContactById(contactId, req.user.id);
 
   if (contact === null) {
     throw new createHttpError(404, 'Contact not found');
   }
+
+  // if (contact.userId.toString() !== req.user.id.toString()) {
+  //   throw new createHttpError(403, 'Access is forbidden');
+  // }
 
   res.json({
     status: 200,
@@ -63,7 +68,8 @@ export async function createContactController(req, res) {
     phoneNumber: req.body.phoneNumber,
     email: req.body.email,
     isFavourite: req.body.isFavourite,
-    contactType: req.body.contactType
+    contactType: req.body.contactType,
+    userId: req.user.id
   };
 
   if (!contact.name || !contact.phoneNumber || !contact.contactType) {
