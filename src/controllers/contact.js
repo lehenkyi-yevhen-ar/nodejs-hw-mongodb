@@ -26,7 +26,15 @@ export async function getContactsController(req, res) {
   res.json({
     status: 200,
     message: 'Contacts found successfully!',
-    data: contacts
+    data: {
+      data: contacts.contacts,
+      page: contacts.page,
+      perPage: contacts.perPage,
+      totalItems: contacts.totalItems,
+      totalPages: contacts.totalPages,
+      hasNextPage: contacts.hasNextPage,
+      hasPreviousPage: contacts.hasPreviousPage
+    }
   });
 }
 
@@ -53,7 +61,7 @@ export async function getContactByIdController(req, res) {
 export async function deleteContactByIdController(req, res) {
   const { contactId } = req.params;
 
-  const result = await deleteContactById(contactId);
+  const result = await deleteContactById(contactId, req.user.id);
 
   if (result === null) {
     throw new createHttpError(404, 'Contact not found');
@@ -99,7 +107,7 @@ export async function updateContactController(req, res) {
     contactType: req.body.contactType
   };
 
-  const result = await updateContact(contactId, contact);
+  const result = await updateContact(contactId, contact, req.user.id);
 
   if (result === null) {
     throw new createHttpError(404, 'Contact not found');
