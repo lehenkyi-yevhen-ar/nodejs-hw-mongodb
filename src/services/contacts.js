@@ -57,5 +57,7 @@ export function createContact(contact) {
 }
 
 export function updateContact(contactId, contact, userId) {
-  return Contact.findOneAndUpdate(contactId, contact, userId, { new: true });
+  return Contact.findOneAndUpdate({ _id: contactId, userId }, contact, {
+    new: true
+  });
 }
