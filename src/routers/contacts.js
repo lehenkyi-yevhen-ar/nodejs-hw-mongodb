@@ -13,6 +13,7 @@ import {
   replaceContactSchema
 } from '../validation/contact.js';
 import { isValidId } from '../middlewares/isValidId.js';
+import { upload } from '../middlewares/upload.js';
 
 const router = Router();
 
@@ -28,6 +29,7 @@ router.delete(
 
 router.post(
   '/',
+  upload.single('avatar'),
   validateBody(createContactSchema),
   ctrlWrapper(createContactController)
 );

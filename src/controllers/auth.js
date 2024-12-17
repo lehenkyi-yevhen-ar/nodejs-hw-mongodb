@@ -4,7 +4,9 @@ import {
   createUser,
   findUserByEmail,
   logoutUser,
-  refreshSession
+  refreshSession,
+  resetPassword,
+  sendResetEmail
 } from '../services/auth.js';
 import bcrypt from 'bcrypt';
 
@@ -87,5 +89,28 @@ export async function refreshUserController(req, res) {
     data: {
       accessToken: session.accessToken
     }
+  });
+}
+
+export async function sendResetEmailController(req, res) {
+  const { email } = req.body;
+
+  await sendResetEmail(email);
+
+  res.send({
+    status: 200,
+    message: 'Reset password email has been successfully sent'
+  });
+}
+
+export async function resetPasswordController(req, res) {
+  const { password, token } = req.body;
+
+  await resetPassword(password, token);
+
+  res.send({
+    status: 200,
+    message: 'Password reset successfully!',
+    data: null
   });
 }
