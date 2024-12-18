@@ -31,8 +31,6 @@ export function parseFilterParams(query) {
   if (parsedType) {
     filters.contactType = parsedType;
   }
-  console.log(filters.contactType);
-
   const parsedIsFavoutire = parseFilterByIsFavourite(isFavourite);
   if (parsedIsFavoutire !== undefined) {
     filters.isFavourite = parsedIsFavoutire;

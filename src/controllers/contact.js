@@ -76,14 +76,14 @@ export async function deleteContactByIdController(req, res) {
 export async function createContactController(req, res) {
   let photo = null;
 
-  if (typeof req.file !== 'undefined') {
+  // if (typeof req.file !== 'undefined') {
+  if (req.file) {
     if (process.env.ENABLE_CLOUDINARY === 'true') {
       const result = await uploadToCloudinary(req.file.path);
-      await fs.unlink(req.file.path);
-
+      fs.unlink(req.file.path);
       photo = result.secure_url;
     } else {
-      await fs.rename(
+      fs.rename(
         req.file.path,
         path.resolve('src', 'public', 'photos', req.file.filename)
       );

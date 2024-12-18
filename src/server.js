@@ -15,7 +15,7 @@ const PORT = Number(env('PORT', '3000'));
 export const setupServer = () => {
   const app = express();
 
-  app.use('/avatars', express.static(path.resolve('src/public/avatars')));
+  app.use('/photos', express.static(path.resolve('src/public/photos')));
   app.use(cors());
   app.use(express.json());
   app.use(cookieParser());

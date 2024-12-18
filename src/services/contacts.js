@@ -41,9 +41,6 @@ export async function getContacts({
 }
 
 export function getContactById(contactId, userId) {
-  console.log(contactId);
-  console.log(userId);
-
   // return Contact.findById(contactId);
   return Contact.findOne({ _id: contactId, userId });
 }
