@@ -1,5 +1,5 @@
 import createHttpError from 'http-errors';
-import * as fs from 'node:fs';
+import * as fs from 'fs/promises';
 import path from 'node:path';
 import {
   createContact,
@@ -80,8 +80,8 @@ export async function createContactController(req, res) {
   if (req.file) {
     if (process.env.ENABLE_CLOUDINARY === 'true') {
       const result = await uploadToCloudinary(req.file.path);
+      photo = result;
       fs.unlink(req.file.path);
-      photo = result.secure_url;
     } else {
       fs.rename(
         req.file.path,
@@ -124,7 +124,7 @@ export async function updateContactController(req, res) {
   if (typeof req.file !== 'undefined') {
     const uploadResult = await uploadToCloudinary(req.file.path);
     await fs.unlink(req.file.path);
-    photo = uploadResult.secure_url;
+    photo = uploadResult;
   }
 
   const contact = {
