@@ -29,13 +29,14 @@ router.delete(
 
 router.post(
   '/',
-  upload.single('avatar'),
+  upload.single('photo'),
   validateBody(createContactSchema),
   ctrlWrapper(createContactController)
 );
 
 router.patch(
   '/:contactId',
+  upload.single('photo'),
   isValidId,
   validateBody(replaceContactSchema),
   ctrlWrapper(updateContactController)

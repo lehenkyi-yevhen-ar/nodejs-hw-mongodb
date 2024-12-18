@@ -8,12 +8,14 @@ import contactsRouter from './routers/contacts.js';
 import authRouter from './routers/auth.js';
 import cookieParser from 'cookie-parser';
 import { auth } from './middlewares/authenticate.js';
+import path from 'node:path';
 
 const PORT = Number(env('PORT', '3000'));
 
 export const setupServer = () => {
   const app = express();
 
+  app.use('/avatars', express.static(path.resolve('src/public/avatars')));
   app.use(cors());
   app.use(express.json());
   app.use(cookieParser());

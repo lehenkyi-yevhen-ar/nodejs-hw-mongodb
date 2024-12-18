@@ -97,14 +97,14 @@ export async function resetPassword(newPassword, token) {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     await User.findByIdAndUpdate(user._id, { password: hashedPassword });
+    await Session.deleteOne(user._id);
   } catch (error) {
     if (
       error.name === 'JsonWebTokenError' ||
       error.name === 'TokenExpiredError'
     ) {
-      throw createHttpError(401, 'Token error');
+      throw createHttpError(401, 'Token is expired or invalid!');
     }
-    console.error(error);
     throw createHttpError(
       500,
       'Failed to send the email, please try again later'
