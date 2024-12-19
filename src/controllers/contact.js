@@ -118,8 +118,10 @@ export async function createContactController(req, res) {
 }
 
 export async function updateContactController(req, res) {
-  let photo = null;
   const { contactId } = req.params;
+  const existContact = await getContactById(contactId, req.user.id);
+  
+  let photo = existContact.photo;
 
   if (typeof req.file !== 'undefined') {
     const uploadResult = await uploadToCloudinary(req.file.path);
