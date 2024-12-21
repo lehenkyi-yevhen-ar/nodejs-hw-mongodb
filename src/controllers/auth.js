@@ -3,12 +3,14 @@ import {
   createActiveSession,
   createUser,
   findUserByEmail,
+  loginOrRegister,
   logoutUser,
   refreshSession,
   resetPassword,
   sendResetEmail
 } from '../services/auth.js';
 import bcrypt from 'bcrypt';
+import { generateOAuthURL, validateCode } from '../utils/googleOAuth2.js';
 
 export async function registerUserController(req, res) {
   const user = await findUserByEmail(req.body.email);
@@ -112,5 +114,39 @@ export async function resetPasswordController(req, res) {
     status: 200,
     message: 'Password reset successfully!',
     data: null
+  });
+}
+
+export async function getOAuthURLController(req, res) {
+  const url = generateOAuthURL();
+
+  res.send({
+    status: 200,
+    message: 'Successfully get Google OAuth URL',
+    data: url
+  });
+}
+
+export async function confirmOAuthController(req, res) {
+  const { code } = req.body;
+
+  const ticket = await validateCode(code);
+  const session = await loginOrRegister(ticket.payload);
+
+  res.cookie('refreshToken', session.refreshToken, {
+    httpOnly: true,
+    expires: session.refreshTokenValidUntil
+  });
+  res.cookie('sessionId', session._id, {
+    httpOnly: true,
+    expires: session.refreshTokenValidUntil
+  });
+
+  res.status(200).json({
+    status: 200,
+    message: 'Login with Google successfully!',
+    data: {
+      accessToken: session.accessToken
+    }
   });
 }

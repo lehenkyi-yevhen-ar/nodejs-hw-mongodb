@@ -8,6 +8,7 @@ import createHttpError from 'http-errors';
 import jwt from 'jsonwebtoken';
 import { sendMail } from '../utils/sendMail.js';
 import handlebars from 'handlebars';
+import crypto from 'crypto';
 
 const RESET_PASSWORD_TEMPLATE = fs.readFileSync(
   path.resolve('src/templates/reset-password.hbs'),
@@ -110,4 +111,26 @@ export async function resetPassword(newPassword, token) {
       'Failed to send the email, please try again later'
     );
   }
+}
+
+export async function loginOrRegister(payload) {
+  const user = await User.findOne({ email: payload.email });
+  if (user === null) {
+    const password = await bcrypt.hash(
+      crypto.randomBytes(30).toString('base64'),
+      10
+    );
+
+    const createdUser = await User.create({
+      email: payload.email,
+      name: payload.name,
+      password
+    });
+
+    return Session.create({ userId: createdUser._id, ...createSession() });
+  }
+
+  await Session.deleteOne({ userId: user._id });
+
+  return Session.create({ userId: user._id, ...createSession() });
 }
