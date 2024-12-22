@@ -1,0 +1,27 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: University
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description: This is the documentation of University app
+servers:
+  - url: http://127.0.0.1:3010
+tags:
+  - name: Contacts
+    description: Operations with contacts.
+paths:
+  /contacts/{id}:
+    get:
+      $ref: ../swagger/paths/contacts/{id}/get.yaml
+    post:
+      $ref: ../swagger/paths/contacts/{id}/patch.yaml
+  /contacts:
+    post:
+      $ref: ../swagger/paths/contacts/post.yaml
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
