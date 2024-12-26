@@ -7,7 +7,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   description: This is the documentation of University app
 servers:
-  - url: http://127.0.0.1:3010
+  - url: https://nodejs-hw-mongodb-vwfv.onrender.com
 tags:
   - name: Contacts
     description: Operations with contacts.
