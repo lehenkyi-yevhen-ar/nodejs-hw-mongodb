@@ -47,7 +47,7 @@ requestBody:
             format: binary
             default: null
 responses:
-  '201':
+  '200':
     description: Contact edited successfully
     content:
       application/json:
@@ -63,11 +63,31 @@ responses:
               example: 201
             message:
               type: string
-              example: Contact edited successfully
+              example: Successfully patched a contact!
             data:
               $ref: ../../../components/schemas/contact.yaml
   '401':
     $ref: ../../../components/responses/401.yaml
+  '404':
+    description: Contact not found
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: Contact not found
+            data:
+              type: object
+              example: null
   '500':
     $ref: ../../../components/responses/500.yaml
 

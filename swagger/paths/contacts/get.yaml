@@ -5,6 +5,52 @@ operationId: getContacts
 description: Get all contacts
 security:
   - bearerAuth: []
+parameters:
+  - name: page
+    in: query
+    description: Page number for pagination (optional)
+    required: false
+    schema:
+      type: integer
+      example: 1
+  - name: perPage
+    in: query
+    description: Number of items showing per page for pagination (optional)
+    required: false
+    schema:
+      type: integer
+      example: 10
+  - name: sortBy
+    in: query
+    description: Field by which to sort the results (optional)
+    required: false
+    schema:
+      type: string
+      example: name
+  - name: sortOrder
+    in: query
+    description: Sort order (ascending (asc) or descending(desc)) (optional)
+    required: false
+    schema:
+      type: string
+      example: asc
+  - name: contactType
+    in: query
+    description: Filter contacts by type (optional)
+    required: false
+    schema:
+      type: string
+      enum: [home, personal]
+      example: personal
+      default: personal
+  - name: isFavourite
+    in: query
+    description: Filter contacts by whether they are marked as favorite
+    required: false
+    schema:
+      type: boolean
+      example: true
+
 responses:
   '200':
     description: Get contacts
@@ -24,28 +70,32 @@ responses:
               type: string
               example: Contacts received successfully
             data:
-              $ref: ../../components/schemas/contact.yaml
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: ../../components/schemas/contact.yaml
+                  example: []
+                page:
+                  type: integer
+                  example: 1
+                perPage:
+                  type: integer
+                  example: 10
+                totalItems:
+                  type: integer
+                  example: 1
+                totalPages:
+                  type: integer
+                  example: 1
+                hasNextPage:
+                  type: boolean
+                  example: false
+                hasPreviousPage:
+                  type: boolean
+                  example: false
   '401':
     $ref: ../../components/responses/401.yaml
-  '404':
-    description: Contacts not found
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - status
-            - message
-            - data
-          properties:
-            status:
-              type: integer
-              example: 404
-            message:
-              type: string
-              example: Contacts not found
-            data:
-              type: object
-              example: null
   '500':
     $ref: ../../components/responses/500.yaml
