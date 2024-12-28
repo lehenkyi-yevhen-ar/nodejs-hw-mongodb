@@ -1,6 +1,6 @@
 tags:
   - Contacts
-summary: Get all contacts
+summary: Get all the contacts
 operationId: getContacts
 description: Get all contacts
 security:
