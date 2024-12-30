@@ -120,7 +120,10 @@ export async function createContactController(req, res) {
 export async function updateContactController(req, res) {
   const { contactId } = req.params;
   const existContact = await getContactById(contactId, req.user.id);
-  
+  if (!existContact) {
+    throw new createHttpError(404, 'Contact not found');
+  }
+
   let photo = existContact.photo;
 
   if (typeof req.file !== 'undefined') {

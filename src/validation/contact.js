@@ -9,7 +9,8 @@ export const createContactSchema = Joi.object({
     .messages({ 'string.min': 'Number should be at least 10-digits long' }),
   email: Joi.string().email(),
   isFavourite: Joi.boolean(),
-  contactType: Joi.string().valid('home', 'personal').required()
+  contactType: Joi.string().valid('home', 'personal').required(),
+  photo: Joi.any().optional()
 });
 
 export const replaceContactSchema = Joi.object({
@@ -19,5 +20,6 @@ export const replaceContactSchema = Joi.object({
   ),
   email: Joi.string().email(),
   isFavourite: Joi.boolean(),
-  contactType: Joi.string().valid('home', 'personal')
+  contactType: Joi.string().valid('home', 'personal'),
+  photo: Joi.any().optional()
 });
